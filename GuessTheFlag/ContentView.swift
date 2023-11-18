@@ -7,6 +7,30 @@
 
 import SwiftUI
 
+struct BlueFont: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .font(.title.bold())
+            .foregroundColor(.blue)
+    }
+}
+
+extension View {
+    func modifierBlueFont() -> some View {
+        self.modifier(BlueFont())
+    }
+}
+
+struct FlagImage: View {
+    var country: String
+    
+    var body: some View {
+        Image(country)
+            .clipShape(.capsule)
+            .shadow(radius: 10)
+    }
+}
+
 struct ContentView: View {
     @State private var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Nigeria", "Poland", "Spain", "UK", "Ukraine", "US"].shuffled()
     
@@ -34,8 +58,9 @@ struct ContentView: View {
                 VStack(spacing: 15) {
                     VStack {
                         Text("Tap the flag of")
-                            .foregroundStyle(.secondary)
-                            .font(.subheadline.weight(.semibold))
+                            .modifierBlueFont()
+//                            .foregroundStyle(.secondary)
+//                            .font(.subheadline.weight(.semibold))
                         Text(countries[correctAnswer])
                             .font(.largeTitle.weight(.heavy))
                     }
@@ -44,9 +69,10 @@ struct ContentView: View {
                         Button {
                             flagTapped(number)
                         } label: {
-                            Image(countries[number])
-                                .clipShape(.capsule)
-                                .shadow(radius: 5)
+                            FlagImage(country: countries[number])
+//                            Image(countries[number])
+//                                .clipShape(.capsule)
+//                                .shadow(radius: 5)
                         }
                     }
                 }
