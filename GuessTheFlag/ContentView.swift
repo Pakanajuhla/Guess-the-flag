@@ -40,6 +40,8 @@ struct ContentView: View {
     @State private var scoreTitle = ""
     @State private var userScore = 0
     @State private var questionCount = 0
+    @State private var animationAmount = 0.0
+    
     
     var body: some View {
         ZStack {
@@ -59,8 +61,6 @@ struct ContentView: View {
                     VStack {
                         Text("Tap the flag of")
                             .modifierBlueFont()
-//                            .foregroundStyle(.secondary)
-//                            .font(.subheadline.weight(.semibold))
                         Text(countries[correctAnswer])
                             .font(.largeTitle.weight(.heavy))
                     }
@@ -68,14 +68,18 @@ struct ContentView: View {
                     ForEach(0..<3) { number in
                         Button {
                             flagTapped(number)
+                            withAnimation(.spring(duration: 1, bounce: 0.5)) {
+                                animationAmount += 360
+                            }
                         } label: {
                             FlagImage(country: countries[number])
-//                            Image(countries[number])
-//                                .clipShape(.capsule)
-//                                .shadow(radius: 5)
+                            
                         }
                     }
                 }
+                .rotation3DEffect(
+                    .degrees(animationAmount),axis: (x: 0, y: 1, z: 0)
+                )
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 20)
                 .background(.regularMaterial)
